@@ -26,8 +26,8 @@ var board = new five.Board();
 board.on("ready", function() {
   
   var led = new five.Led("O5");
-  var thermSensor = five.Sensor({pin: "I0", freq: (60 * 1000 * 10)});
-  var photoSensor = five.Sensor({pin: "I2", freq: (60 * 1000 * 10)});
+  var thermSensor = five.Sensor({pin: "I0", freq: (60 * 1000 * 5)});
+  var photoSensor = five.Sensor({pin: "I2", freq: (60 * 1000 * 5)});
 
   lcd = new five.LCD({
     // LCD pin name  RS  EN  DB4 DB5 DB6 DB7
@@ -40,7 +40,9 @@ board.on("ready", function() {
   });
 
   thermSensor.on("data", function() {
-     automatrFirebase.update({temprature: {value:converter.celsius(this.value).toFixed(1), timestamp:Date.now()}});     
+     var tempCelsius = converter.celsius(this.value).toFixed(1)
+     automatrFirebase.update({temprature: {value:tempCelsius, timestamp:Date.now()}});     
+     tempratureLog.push({temprature: {value: tempCelsius, timestamp: Date.now()}});
      lcd.clear().cursor(0, 0).print("Temp: " + converter.celsius(this.value).toFixed(1) + String.fromCharCode(223) + "C");
      lcd.cursor(1, 0);
   });
