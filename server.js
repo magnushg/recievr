@@ -12,14 +12,13 @@ var automatrFirebase = new Firebase('https://automatr.firebaseio.com/');
 var tempratureLog = new Firebase('https://automatr.firebaseio.com/environmentLog');
 
 /*setInterval(function() {
-    automatrFirebase.update({temprature: {value: _.random(15.0, 22.0), timestamp: Date.now()}});
-    tempratureLog.push({temprature: {value: _.random(15.0, 22.0), timestamp: Date.now()}});
+    tempratureLog.push({brightness: {value: _.random(0, 1023), timestamp: Date.now()}});
 
 }, 1000);
 
 tempratureLog.on('child_added', function(snapshot) {
   var msgData = snapshot.val();
-  console.log(msgData.temprature.value + ' timestamp ' + msgData.temprature.timestamp);
+  console.log(msgData.brightness.value + ' timestamp ' + msgData.brightness.timestamp);
 });*/
 var board = new five.Board();
 
@@ -49,6 +48,7 @@ board.on("ready", function() {
 
   photoSensor.on("data", function () {
     automatrFirebase.update({brightness: {value: this.value, timestamp: Date.now()}});
+    tempratureLog.push({brightness: {value: this.value, timestamp: Date.now()}});
   })
 
   automatrFirebase.on('value', function(snapshot) {
