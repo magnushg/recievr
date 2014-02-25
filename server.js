@@ -3,6 +3,8 @@ var express = require("express"),
     Firebase = require("firebase"),
     _ = require("underscore"),
     converter = require("./converter"),
+    request = require("request"),
+    moment = require("moment"),
 
 	app = express(),
 	port = process.env.PORT || 9900,
@@ -10,11 +12,13 @@ var express = require("express"),
 
 var automatrFirebase = new Firebase('https://automatr.firebaseio.com/');
 var tempratureLog = new Firebase('https://automatr.firebaseio.com/environmentLog');
+var stopMonitor = new Firebase('https://automatr.firebaseio.com/monitoredStop');
+
 
 /*setInterval(function() {
     tempratureLog.push({brightness: {value: _.random(0, 1023), timestamp: Date.now()}});
 
-}, 1000);
+}, 5000);
 
 tempratureLog.on('child_added', function(snapshot) {
   var msgData = snapshot.val();
@@ -51,15 +55,28 @@ board.on("ready", function() {
     tempratureLog.push({brightness: {value: this.value, timestamp: Date.now()}});
   })
 
-  automatrFirebase.on('value', function(snapshot) {
-        var switchValue = snapshot.val().lightswitch;
-        if(switchValue) {
-            led.on();
-        }
-        else {
-            led.off();
-        }
+  automatrFirebase.on('value', function (snapshot) {
+        snapshot.val().lightswitch ? led.on() : led.off();        
     });
+
+  stopMonitor.on('value', function (snapshot) {
+	var travelInfo = snapshot.val().stop;
+	request('http://reis.trafikanten.no/ReisRest/RealTime/GetRealTimeData/' + snapshot.val().stop.stopRef + '', function (error, response, body) {
+  		if (!error && response.statusCode == 200) {
+    		var json = JSON.parse(body);  		
+    		var destination = _.find(json, function(item) {
+    			return (item.PublishedLineName == travelInfo.name &&
+    				   item.DirectionName == travelInfo.direction &&
+    				   item.DestinationRef == travelInfo.destinationRef);
+    		});
+    		if(destination) 
+    		{
+    			console.log(destination.LineRef + ' ' + destination.DestinationDisplay + ' ' + calculateExpectedTimeString(destination.ExpectedArrivalTime))
+    			//lcd.print(destination.LineRef)
+    		}
+  		}
+	});
+  });
 
   board.repl.inject({
     led: led,
@@ -67,6 +84,16 @@ board.on("ready", function() {
   }); 
 
 });
+
+function calculateExpectedTimeString(actualTime) {
+	var diffFromNow = moment(actualTime).diff(moment(), 'minutes');
+
+	if(diffFromNow === 0) {
+	    return 'Nå'
+	}
+
+	return diffFromNow > 10 ? moment(actualTime).format('HH:mm') : diffFromNow + ' min';
+}
 
 app.get('/message', function(req, res) {	
 	res.json({message:'ok'});

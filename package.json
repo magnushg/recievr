@@ -5,6 +5,8 @@
 		"express": "*",
 		"johnny-five": "*",
 		"firebase": "*",
-		"underscore": "*"
+		"underscore": "*",
+		"request": "*",
+		"moment": "*"
 	}
 }
