@@ -71,8 +71,10 @@ board.on("ready", function() {
     		});
     		if(destination) 
     		{
-    			console.log(destination.LineRef + ' ' + destination.DestinationDisplay + ' ' + calculateExpectedTimeString(destination.ExpectedArrivalTime))
-    			//lcd.print(destination.LineRef)
+    			var output = destination.LineRef + ' ' + destination.DestinationDisplay + ' ' + calculateExpectedTimeString(destination.ExpectedArrivalTime);
+    			console.log(output);
+    			lcd.cursor(1, 0);
+    			lcd.print(destination.LineRef);
     		}
   		}
 	});
