@@ -60,7 +60,8 @@ board.on("ready", function() {
 
   stopMonitor.on('value', function (snapshot) {
 	var travelInfo = snapshot.val().stop;
-	request('http://reis.trafikanten.no/ReisRest/RealTime/GetRealTimeData/' + snapshot.val().stop.stopRef + '', function (error, response, body) {
+	setInterval(function () {
+		request('http://reis.trafikanten.no/ReisRest/RealTime/GetRealTimeData/' + snapshot.val().stop.stopRef + '', function (error, response, body) {
   		if (!error && response.statusCode == 200) {
     		var json = JSON.parse(body);  		
     		var destination = _.find(json, function(item) {
@@ -77,6 +78,7 @@ board.on("ready", function() {
     		}
   		}
 	});
+	}, moment.duration(30, 'seconds').asMilliseconds());
   });
 
   board.repl.inject({
