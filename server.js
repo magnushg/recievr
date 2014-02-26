@@ -8,7 +8,8 @@ var express = require("express"),
 
 	app = express(),
 	port = process.env.PORT || 9900,
-    Thermistor;
+    Thermistor,
+    monitoringInterval;
 
 var automatrFirebase = new Firebase('https://automatr.firebaseio.com/');
 var tempratureLog = new Firebase('https://automatr.firebaseio.com/environmentLog');
@@ -59,8 +60,31 @@ board.on("ready", function() {
     });
 
   stopMonitor.on('value', function (snapshot) {
+	monitoringInterval && clearInterval(monitoringInterval);
 	var travelInfo = snapshot.val().stop;
-	setInterval(function (travelInfo, lcd) {
+	var $lcd = lcd;
+	if(travelInfo.cancelMonitoring) {
+		monitoringInterval && clearInterval(monitoringInterval);
+		console.log("Monitoring stopped");
+		lcd.cursor(1, 0);
+		lcd.print('');
+	}
+	else {
+			monitoringInterval = setInterval(function () {
+			getTravelInfo(travelInfo, $lcd);
+		}, moment.duration(30, 'seconds').asMilliseconds(), travelInfo);
+	}
+
+	});
+
+  board.repl.inject({
+    led: led,
+    thermSensor: thermSensor
+  }); 
+
+});
+
+function getTravelInfo(travelInfo, lcd) {
 		request('http://reis.trafikanten.no/ReisRest/RealTime/GetRealTimeData/' + travelInfo.stopRef + '', function (error, response, body) {
   		if (!error && response.statusCode == 200) {
     		var json = JSON.parse(body);  		
@@ -78,15 +102,7 @@ board.on("ready", function() {
     		}
   		}
 	});
-	}, moment.duration(30, 'seconds').asMilliseconds());
-  });
-
-  board.repl.inject({
-    led: led,
-    thermSensor: thermSensor
-  }); 
-
-});
+}
 
 function calculateExpectedTimeString(actualTime) {
 	var diffFromNow = moment(actualTime).diff(moment(), 'minutes');
