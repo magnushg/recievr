@@ -46,8 +46,7 @@ board.on("ready", function() {
      var tempCelsius = converter.celsius(this.value).toFixed(1)
      automatrFirebase.update({temprature: {value:tempCelsius, timestamp:Date.now()}});     
      tempratureLog.push({temprature: {value: tempCelsius, timestamp: Date.now()}});
-     lcd.clear().cursor(0, 0).print("Temp: " + converter.celsius(this.value).toFixed(1) + String.fromCharCode(223) + "C");
-     lcd.cursor(1, 0);
+     lcd.cursor(0, 0).print("Temp: " + converter.celsius(this.value).toFixed(1) + String.fromCharCode(223) + "C");
   });
 
   photoSensor.on("data", function () {
@@ -71,10 +70,10 @@ board.on("ready", function() {
     		});
     		if(destination) 
     		{
-    			var output = destination.LineRef + ' ' + destination.DestinationDisplay + ' ' + calculateExpectedTimeString(destination.ExpectedArrivalTime);
+    			var output = destination.LineRef + ' ' + destination.DestinationDisplay.substring(0,6) + '. ' + calculateExpectedTimeString(destination.ExpectedArrivalTime);
     			console.log(output);
     			lcd.cursor(1, 0);
-    			lcd.print(destination.LineRef);
+    			lcd.print(output);
     		}
   		}
 	});
