@@ -23,8 +23,7 @@ Internet of things
 ------------------
 * Kan bygges inn i hjemmet, hvitevarer sier ifra at de må fikses eller fylles på
 * Kontrollere lamper, ovner, kaffetralter you name it.
-
-Sensorer for temperatur, lys, gasser, nærhet, alkohol
+* Sensorer for temperatur, lys, gasser, nærhet, alkohol
 Lys, motorer, servoer og releer som lar deg kontrollere andre elektriske enheter som ovner, lys, kaffetraktere.
 
 Arduino
@@ -61,7 +60,7 @@ Firebase
 
 Demo
 ----
-*Vise workflow, kode på Windows box, overføre filer med WinSCP, kjøre kode etc via SSH
+* Vise workflow, kode på Windows box, overføre filer med WinSCP, kjøre kode etc via SSH
 
 Oppsummering
 ------------
