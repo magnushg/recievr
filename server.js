@@ -1,8 +1,8 @@
 var express = require("express"),
     five = require("johnny-five"),
     Firebase = require("firebase"),
-    converter = require("./converter"),
-    stringUtils = require("./stringUtils"),
+    converter = require("./utils/converter"),
+    stringUtils = require("./utils/stringUtils"),
     moment = require("moment"),
 
 	app = express(),
