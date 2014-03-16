@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"dependencies": {
 		"express": "*",
-		"johnny-five": "*",
+		"johnny-five": "0.7.18",
 		"firebase": "*",
 		"moment": "*"
 	}
