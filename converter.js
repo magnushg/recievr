@@ -1,5 +1,4 @@
-module.exports = function()
-{
+module.exports = function() {
   var adcres, beta, kelvin, rb, ginf;
 
   adcres = 1023;
@@ -29,7 +28,5 @@ return {
   celsius : celsius,
   fahrenheit: fahrenheit
 }
-
-
 }();
 
