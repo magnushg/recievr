@@ -19,11 +19,22 @@ board.on("ready", function() {
   
   var led = new five.Led("O5");
   var relay = new five.Relay("O0");
-  var thermSensor = five.Sensor({pin: "I0", freq: moment.duration(30, 'seconds').asMilliseconds()});
-  var photoSensor = five.Sensor({pin: "I2", freq: moment.duration(30, 'seconds').asMilliseconds()});
+  var thermSensor = five.Sensor({pin: "I0", freq: moment.duration(5, 'seconds').asMilliseconds()});
+  var photoSensor = five.Sensor({pin: "I2", freq: moment.duration(5, 'seconds').asMilliseconds()});
 
   automatrFirebase.on('value', function (snapshot) {
       snapshot.val().lightswitch ? relay.on() : relay.off();
+  });
+
+  thermSensor.on('data', function () {
+    var temperature = converter.celsius(this.value).toFixed(2);
+    console.log("Temperature: " + temperature);
+    automatrFirebase.update({temperature: {value:temperature, timestamp: Date.now()}});
+  });
+
+  photoSensor.on('data', function () {
+    console.log("Brightness: " + this.value);
+    automatrFirebase.update({brightness: {value:this.value, timestamp: Date.now()}});
   });
 
   board.repl.inject({
