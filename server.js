@@ -42,6 +42,9 @@ board.on("ready", function() {
     if(this.value <= 200) {
       relay.on();
     }
+    else {
+      relay.off();
+    }
   });
 
   board.repl.inject({
