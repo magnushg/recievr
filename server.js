@@ -28,13 +28,17 @@ board.on("ready", function() {
 
   thermSensor.on('data', function () {
     var temperature = converter.celsius(this.value).toFixed(2);
+    var tempLog = {temperature: {value:temperature, timestamp: Date.now()}};
     console.log("Temperature: " + temperature);
-    automatrFirebase.update({temperature: {value:temperature, timestamp: Date.now()}});
+    automatrFirebase.update(tempLog);
+    environmentLog.push(tempLog);
   });
 
   photoSensor.on('data', function () {
-    console.log("Brightness: " + this.value);
-    automatrFirebase.update({brightness: {value:this.value, timestamp: Date.now()}});
+    var brightnessLog = {brightness: {value:this.value, timestamp: Date.now()}};
+    console.log("Brightness: " + this.value);    
+    automatrFirebase.update(brightnessLog);
+    environmentLog.push(brightnessLog);
   });
 
   board.repl.inject({
