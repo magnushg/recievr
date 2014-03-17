@@ -18,12 +18,14 @@ var board = new five.Board({port: "/dev/ttyAMA0"});
 board.on("ready", function() {
   
   var led = new five.Led("O5");
+  var relay = new five.Relay("O0");
   var thermSensor = five.Sensor({pin: "I0", freq: moment.duration(30, 'seconds').asMilliseconds()});
   var photoSensor = five.Sensor({pin: "I2", freq: moment.duration(30, 'seconds').asMilliseconds()});
 
   board.repl.inject({
     led: led,
-    thermSensor: thermSensor
+    thermSensor: thermSensor,
+    relay: relay
   });
 });
 
