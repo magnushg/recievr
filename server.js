@@ -39,6 +39,9 @@ board.on("ready", function() {
     console.log("Brightness: " + this.value);    
     automatrFirebase.update(brightnessLog);
     environmentLog.push(brightnessLog);
+    if(this.value <= 200) {
+      relay.on();
+    }
   });
 
   board.repl.inject({
