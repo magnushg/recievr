@@ -22,6 +22,10 @@ board.on("ready", function() {
   var thermSensor = five.Sensor({pin: "I0", freq: moment.duration(30, 'seconds').asMilliseconds()});
   var photoSensor = five.Sensor({pin: "I2", freq: moment.duration(30, 'seconds').asMilliseconds()});
 
+  automatrFirebase.on('value', function (snapshot) {
+      snapshot.val().lightswitch ? relay.on() : relay.off();
+  });
+
   board.repl.inject({
     led: led,
     thermSensor: thermSensor,
