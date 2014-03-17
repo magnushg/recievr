@@ -23,8 +23,8 @@ board.on("ready", function() {
 
   thermSensor.on("data", function() {
      var tempCelsius = converter.celsius(this.value).toFixed(1)
-     automatrFirebase.update({temprature: {value:tempCelsius, timestamp:Date.now()}});     
-     environmentLog.push({temprature: {value: tempCelsius, timestamp: Date.now()}});
+     automatrFirebase.update({temperature: {value:tempCelsius, timestamp:Date.now()}});     
+     environmentLog.push({temperature: {value: tempCelsius, timestamp: Date.now()}});
      //lcd.cursor(0, 0).print("Temp: " + converter.celsius(this.value).toFixed(1) + String.fromCharCode(223) + "C");
   });
 
