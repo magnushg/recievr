@@ -2,9 +2,9 @@
 	"name": "recievr",
 	"version": "0.0.1",
 	"dependencies": {
-		"express": "*",
+		"express": "latest",
 		"johnny-five": "0.7.18",
-		"firebase": "*",
-		"moment": "*"
+		"firebase": "latest",
+		"moment": "latest"
 	}
 }

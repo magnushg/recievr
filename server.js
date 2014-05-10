@@ -20,10 +20,11 @@ board.on("ready", function() {
   var led = new five.Led("O5");
   var thermSensor = five.Sensor({pin: "I0", freq: moment.duration(30, 'seconds').asMilliseconds()});
   var photoSensor = five.Sensor({pin: "I2", freq: moment.duration(30, 'seconds').asMilliseconds()});
+  var proximity = new five.Sensor({pin: "I5"}); //freq: moment.duration(500, 'milliseconds').asMilliseconds()}
 
   thermSensor.on("data", function() {
      var tempCelsius = converter.celsius(this.value).toFixed(1)
-     automatrFirebase.update({temperature: {value:tempCelsius, timestamp:Date.now()}});     
+     automatrFirebase.update({temperature: {value:tempCelsius, timestamp: Date.now()}});    
      environmentLog.push({temperature: {value: tempCelsius, timestamp: Date.now()}});
      //lcd.cursor(0, 0).print("Temp: " + converter.celsius(this.value).toFixed(1) + String.fromCharCode(223) + "C");
   });
@@ -31,21 +32,23 @@ board.on("ready", function() {
   photoSensor.on("data", function () {
     automatrFirebase.update({brightness: {value: this.value, timestamp: Date.now()}});
     environmentLog.push({brightness: {value: this.value, timestamp: Date.now()}});
-  })
+  });
+
+  proximity.on("change", function() {
+   //console.log(this.value);
+   this.value > 0 ? automatrFirebase.update({proximity: {value: true, timestamp: Date.now()}}) : automatrFirebase.update({proximity: {value: false, timestamp: Date.now()}});
+  });
 
   automatrFirebase.on('value', function (snapshot) {
-        snapshot.val().lightswitch ? led.on() : led.off();        
+        snapshot.val().lightswitch ? led.on() : led.off();      
     });
 
   board.repl.inject({
     led: led,
-    thermSensor: thermSensor
+    thermSensor: thermSensor,
+    proximity: proximity
   }); 
 
-});
-
-app.get('/message', function(req, res) {	
-	res.json({message:'ok'});
 });
 
 app.listen(port);
