@@ -11,7 +11,7 @@ module.exports = function() {
   // Ginf = 1/Rinf
   ginf = 120.6685;
 
-function celsius(raw) {
+function tempC(raw) {
   var rthermistor, tempc;
 
   rthermistor = rb * (adcres / raw - 1);
@@ -20,7 +20,7 @@ function celsius(raw) {
   return tempc - kelvin;
 };
 
-function fahrenheit(raw) {
+function tempF(raw) {
   return (this.c(raw) * 9) / 5 + 32;
 };
 

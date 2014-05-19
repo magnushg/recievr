@@ -3,7 +3,6 @@ var express = require("express"),
     Firebase = require("firebase"),
     converter = require("./utils/converter"),
     stringUtils = require("./utils/stringUtils"),
-    moment = require("moment"),
   	app = express(),
 	  port = process.env.PORT || 9900,
     firebaseName = 'automatr-test';
@@ -14,10 +13,10 @@ var environmentLog = new Firebase('https://{0}.firebaseio.com/environmentLog'.fo
 var board = new five.Board();
 
 board.on("ready", function() {
-
-  board.repl.inject({
-
-  }); 
+ 
+ board.repl.inject({
+    
+  });
 
 });
 
