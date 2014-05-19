@@ -25,8 +25,8 @@ function tempF(raw) {
 };
 
 return {
-  celsius : celsius,
-  fahrenheit: fahrenheit
+  tempC : tempC,
+  tempF: tempF
 }
 }();
 
