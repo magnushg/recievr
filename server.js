@@ -57,6 +57,8 @@ var express = require("express"),
      automatrFirebase.on('value', function (snapshot) {
        snapshot.val().lightswitch ? lightSwitch.on() : lightSwitch.off();   
      });
+
+    setTimeout(heartBeat(automatrFirebase), 5 * 1000);   
      
        
      board.repl.inject({
@@ -64,6 +66,10 @@ var express = require("express"),
       });
      
     });
+
+    function heartBeat(firebase) {
+          firebase.update({heartBeat: Date.now()});
+        }
     
     
 app.listen(port);
