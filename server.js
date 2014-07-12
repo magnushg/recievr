@@ -1,12 +1,11 @@
 var express = require("express"),
     five = require("johnny-five"),
     app = express(),
-    port = process.env.PORT || 9900,
+	  port = process.env.PORT || 9900,
     converter = require("./utils/converter"),
     stringUtils = require("./utils/stringUtils"),
     Firebase = require("firebase"),
-    firebaseName = 'automatr-test',
-      
+    firebaseName = 'automatr-test',      
       
     automatrFirebase = new Firebase('https://{0}.firebaseio.com/'.format(firebaseName)),
     environmentLog = new Firebase('https://{0}.firebaseio.com/environmentLog'.format(firebaseName));
