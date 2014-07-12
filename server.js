@@ -68,7 +68,7 @@ var express = require("express"),
     });
 
     function heartBeat(firebase) {
-          firebase.update({heartBeat: Date.now()});
+          firebase.update({heartBeat: {value: Date.now()}});
         }
     
     
