@@ -58,7 +58,7 @@ var express = require("express"),
        snapshot.val().lightswitch ? lightSwitch.on() : lightSwitch.off();   
      });
 
-    setTimeout(heartBeat(automatrFirebase), 5 * 1000);   
+    setInterval(heartBeat, 5 * 1000, automatrFirebase);   
      
        
      board.repl.inject({
